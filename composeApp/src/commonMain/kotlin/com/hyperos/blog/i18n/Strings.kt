@@ -4,6 +4,7 @@ object Strings {
     private val zh = mapOf(
         "appName" to "HyperOS 博客",
         "home" to "首页",
+        "all" to "全部",
         "archive" to "归档",
         "messages" to "留言板",
         "friends" to "友链",
@@ -67,6 +68,7 @@ object Strings {
     private val en = mapOf(
         "appName" to "HyperOS Blog",
         "home" to "Home",
+        "all" to "All",
         "archive" to "Archive",
         "messages" to "Messages",
         "friends" to "Friends",
