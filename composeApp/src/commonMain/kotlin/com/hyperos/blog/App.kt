@@ -5,7 +5,10 @@ import com.hyperos.blog.data.createDefaultApiClient
 import com.hyperos.blog.navigation.AppRoute
 import com.hyperos.blog.theme.AppTheme
 import com.hyperos.blog.ui.ArchiveScreen
+import com.hyperos.blog.ui.AboutScreen
+import com.hyperos.blog.ui.FriendsScreen
 import com.hyperos.blog.ui.HomeScreen
+import com.hyperos.blog.ui.MessagesScreen
 import com.hyperos.blog.ui.PostDetailScreen
 import com.hyperos.blog.ui.SearchScreen
 import com.hyperos.blog.ui.TagsScreen
@@ -25,6 +28,9 @@ fun App() {
                 api = api,
             )
             AppRoute.Archive -> ArchiveScreen(appState, onNavigate = { currentRoute = it }, api = api)
+            AppRoute.Messages -> MessagesScreen(appState, onNavigate = { currentRoute = it }, api = api)
+            AppRoute.Friends -> FriendsScreen(appState, onNavigate = { currentRoute = it }, api = api)
+            AppRoute.About -> AboutScreen(appState, onNavigate = { currentRoute = it })
             AppRoute.Search -> SearchScreen(
                 appState,
                 onBack = { currentRoute = AppRoute.Home },
