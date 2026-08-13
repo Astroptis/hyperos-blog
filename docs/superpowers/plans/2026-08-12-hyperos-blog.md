@@ -4127,12 +4127,15 @@ git commit -m "chore: build and deploy scripts"
 - Create: `scripts/seed-data.mjs`
 
 **Interfaces:**
+- Consumes: 用户提供的 Cloudflare 账号 ID 和 API token
 - Produces: 线上可访问的博客
 
 - [ ] **Step 1: 配置 Cloudflare 认证**
 
-设置环境变量（在 PowerShell 会话）：
+设置环境变量（在 PowerShell 会话，请填入你自己的凭据）：
 ```powershell
+$env:CLOUDFLARE_ACCOUNT_ID = "你的账号ID"
+$env:CLOUDFLARE_API_TOKEN = "你的API令牌"
 ```
 确认：
 ```bash
