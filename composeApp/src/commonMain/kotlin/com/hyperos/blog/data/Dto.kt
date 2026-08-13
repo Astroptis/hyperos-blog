@@ -37,6 +37,11 @@ data class PostListData(
 )
 
 @Serializable
+data class SearchResult(
+    val posts: List<Post> = emptyList(),
+)
+
+@Serializable
 data class Category(
     val id: Long = 0,
     val name_zh: String = "",
