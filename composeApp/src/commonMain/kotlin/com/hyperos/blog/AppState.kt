@@ -3,6 +3,7 @@ package com.hyperos.blog
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.hyperos.blog.data.Post
 import com.hyperos.blog.theme.ThemeState
 
 class AppState {
@@ -11,6 +12,7 @@ class AppState {
     var adminToken by mutableStateOf<String?>(null)
     var siteTitle by mutableStateOf("HyperOS 博客")
     var currentSlug by mutableStateOf<String?>(null)
+    var editingPost by mutableStateOf<Post?>(null)
 
     val isAdmin: Boolean get() = adminToken != null
 }

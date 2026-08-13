@@ -75,6 +75,11 @@ fun SettingsScreen(
                         title = if (appState.language == "zh") "字号（暂不可调）" else "Font size (coming soon)",
                         valueText = "1.0x",
                     )
+                    HorizontalDivider()
+                    ArrowPreference(
+                        title = Strings.get(appState.language, "admin"),
+                        onClick = { onNavigate(AppRoute.Admin) },
+                    )
                 }
             }
         }

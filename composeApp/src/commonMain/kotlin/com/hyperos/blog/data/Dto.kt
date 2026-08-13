@@ -23,6 +23,7 @@ data class Post(
     val featured: Boolean = false,
     val viewCount: Long = 0,
     val likeCount: Long = 0,
+    val status: String = "published",
     val createdAt: String = "",
     val updatedAt: String = "",
 )
