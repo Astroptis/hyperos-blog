@@ -8,7 +8,8 @@
     "deploy": "wrangler deploy",
     "migrate:local": "wrangler d1 migrations apply hyperos-blog --local",
     "migrate:remote": "wrangler d1 migrations apply hyperos-blog --remote",
-    "types": "wrangler types"
+    "types": "wrangler types",
+    "init-admin": "node ../scripts/init-admin.mjs"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260811.1",
