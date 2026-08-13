@@ -45,3 +45,14 @@ kotlin {
 compose.resources {
     publicResClass = true
 }
+
+tasks.named("wasmJsBrowserDistribution") {
+    doLast {
+        val distDir = layout.buildDirectory.dir("dist/wasmJs/productionExecutable")
+        val webResources = layout.projectDirectory.dir("src/wasmJsMain/resources")
+        copy {
+            from(webResources) { include("_redirects", "_headers") }
+            into(distDir)
+        }
+    }
+}
