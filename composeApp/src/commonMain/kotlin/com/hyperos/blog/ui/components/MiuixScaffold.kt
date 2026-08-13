@@ -166,21 +166,26 @@ private fun SideNavItemRow(
     } else {
         MiuixTheme.colorScheme.onSurfaceContainer.copy(alpha = 0.4f)
     }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isItemHovered by interactionSource.collectIsHoveredAsState()
+    val itemCornerRadius = 22.dp
     Row(
         modifier = Modifier
             .height(48.dp)
             .padding(horizontal = 6.dp)
-            .then(
-                if (selected) {
-                    Modifier.squircleBackground(
-                        color = MiuixTheme.colorScheme.surfaceContainerHighest,
-                        cornerRadius = 18.dp,
-                    )
-                } else {
-                    Modifier
+            .squircleBackground(
+                color = when {
+                    selected -> MiuixTheme.colorScheme.surfaceContainerHighest
+                    isItemHovered -> MiuixTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.5f)
+                    else -> Color.Transparent
                 },
+                cornerRadius = itemCornerRadius,
             )
-            .clickable(onClick = onClick)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick,
+            )
             .padding(horizontal = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (expanded) Arrangement.Start else Arrangement.Center,

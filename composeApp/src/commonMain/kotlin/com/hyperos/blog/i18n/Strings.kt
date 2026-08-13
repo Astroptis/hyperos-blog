@@ -63,6 +63,12 @@ object Strings {
         "friendDesc" to "一句话介绍",
         "leaveMessage" to "留言",
         "welcome" to "欢迎来到我的博客",
+        "siteSettings" to "站点设置",
+        "siteName" to "网页名称",
+        "siteBio" to "简介",
+        "avatarUrl" to "头像 URL",
+        "faviconUrl" to "网页图标 URL",
+        "commentManage" to "评论管理",
     )
 
     private val en = mapOf(
@@ -127,6 +133,12 @@ object Strings {
         "friendDesc" to "Description",
         "leaveMessage" to "Leave a message",
         "welcome" to "Welcome to my blog",
+        "siteSettings" to "Site settings",
+        "siteName" to "Site name",
+        "siteBio" to "Bio",
+        "avatarUrl" to "Avatar URL",
+        "faviconUrl" to "Favicon URL",
+        "commentManage" to "Comments",
     )
 
     fun get(lang: String, id: String): String {

@@ -116,6 +116,18 @@ export function registerAdminRoutes(router: Router): void {
     return jsonOk(toPublicPost(updated!));
   });
 
+  router.get('/api/admin/comments', async (req, env) => {
+    const username = await requireAdmin(req, env);
+    if (!username) return jsonError(401, 'Not authenticated');
+    const rows = await env.DB.prepare(
+      `SELECT c.id, c.post_id AS postId, p.title_zh AS postTitle,
+              c.nickname, c.content, c.created_at AS createdAt
+       FROM comments c LEFT JOIN posts p ON p.id = c.post_id
+       ORDER BY c.created_at DESC LIMIT 500`
+    ).all();
+    return jsonOk(rows.results);
+  });
+
   router.delete('/api/admin/posts/:id', async (req, env, _ctx, params) => {
     const username = await requireAdmin(req, env);
     if (!username) return jsonError(401, 'Not authenticated');

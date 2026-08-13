@@ -31,7 +31,6 @@ fun AdminLoginScreen(
     onLoggedIn: () -> Unit,
     api: ApiClient,
 ) {
-    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
@@ -47,7 +46,6 @@ fun AdminLoginScreen(
             Modifier.fillMaxSize().padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            TextField(value = username, onValueChange = { username = it }, label = Strings.get(appState.language, "username"))
             TextField(value = password, onValueChange = { password = it }, label = Strings.get(appState.language, "password"))
             if (error != null) {
                 Text(error!!, color = MiuixTheme.colorScheme.error)
@@ -59,7 +57,7 @@ fun AdminLoginScreen(
                     scope.launch {
                         val resp = api.post<AuthResponse>(
                             "/api/auth/login",
-                            mapOf("username" to username.trim(), "password" to password),
+                            mapOf("username" to "admin", "password" to password),
                         )
                         if (resp.ok && resp.data != null) {
                             appState.adminToken = resp.data.token

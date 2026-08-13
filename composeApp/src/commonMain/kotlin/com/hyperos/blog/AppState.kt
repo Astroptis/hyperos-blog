@@ -11,6 +11,9 @@ class AppState {
     var language by mutableStateOf("zh")
     var adminToken by mutableStateOf<String?>(null)
     var siteTitle by mutableStateOf("HyperOS 博客")
+    var siteBio by mutableStateOf("欢迎来到我的博客")
+    var avatarUrl by mutableStateOf("")
+    var faviconUrl by mutableStateOf("")
     var currentSlug by mutableStateOf<String?>(null)
     var editingPost by mutableStateOf<Post?>(null)
 

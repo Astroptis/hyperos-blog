@@ -10,7 +10,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 class ApiClient(
-    @PublishedApi internal val baseUrl: String,
+    @PublishedApi internal val baseUrls: List<String>,
     private val engine: HttpClientEngine,
 ) {
     @PublishedApi
@@ -35,20 +35,25 @@ class ApiClient(
 
     @PublishedApi
     internal suspend inline fun <reified T> request(method: String, path: String, body: Any? = null): ApiResponse<T> {
-        return try {
-            val response = client.request("$baseUrl$path") {
-                this.method = HttpMethod(method)
-                contentType(ContentType.Application.Json)
-                if (body != null) setBody(body)
-                authToken?.let { header(HttpHeaders.Authorization, "Bearer $it") }
+        val baseList = baseUrls.ifEmpty { listOf("") }
+        for (baseUrl in baseList) {
+            try {
+                val response = client.request("$baseUrl$path") {
+                    this.method = HttpMethod(method)
+                    contentType(ContentType.Application.Json)
+                    if (body != null) setBody(body)
+                    authToken?.let { header(HttpHeaders.Authorization, "Bearer $it") }
+                }
+                val status = response.status.value
+                val text = response.body<String>()
+                if (status == 401) return ApiResponse(ok = false, error = "Unauthorized")
+                if (status >= 500) continue
+                val json = Json { ignoreUnknownKeys = true }
+                return json.decodeFromString<ApiResponse<T>>(text)
+            } catch (e: Exception) {
+                // 网络错误，尝试下一个 baseUrl
             }
-            val status = response.status.value
-            val text = response.body<String>()
-            if (status == 401) return ApiResponse(ok = false, error = "Unauthorized")
-            val json = Json { ignoreUnknownKeys = true }
-            json.decodeFromString<ApiResponse<T>>(text)
-        } catch (e: Exception) {
-            ApiResponse(ok = false, error = e.message ?: "Network error")
         }
+        return ApiResponse(ok = false, error = "Network error")
     }
 }

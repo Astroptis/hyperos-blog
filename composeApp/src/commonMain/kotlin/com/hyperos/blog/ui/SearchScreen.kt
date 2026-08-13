@@ -40,6 +40,7 @@ fun SearchScreen(
     appState: AppState,
     onBack: () -> Unit,
     onNavigate: (AppRoute) -> Unit,
+    onOpenPost: (String) -> Unit,
     api: ApiClient,
 ) {
     var query by remember { mutableStateOf("") }
@@ -91,10 +92,7 @@ fun SearchScreen(
                 }
             }
             items(results, key = { it.id }) { post ->
-                PostCard(post, appState.language, onClick = {
-                    appState.currentSlug = post.slug
-                    onNavigate(AppRoute.PostDetail)
-                })
+                PostCard(post, appState.language, onClick = { onOpenPost(post.slug) })
                 Spacer(Modifier.height(8.dp))
             }
         }

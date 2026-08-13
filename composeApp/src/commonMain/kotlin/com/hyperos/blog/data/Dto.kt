@@ -79,6 +79,16 @@ data class CommentInput(
 )
 
 @Serializable
+data class AdminComment(
+    val id: Long = 0,
+    val postId: Long = 0,
+    val postTitle: String = "",
+    val nickname: String = "",
+    val content: String = "",
+    val createdAt: String = "",
+)
+
+@Serializable
 data class Message(
     val id: Long = 0,
     val nickname: String = "",

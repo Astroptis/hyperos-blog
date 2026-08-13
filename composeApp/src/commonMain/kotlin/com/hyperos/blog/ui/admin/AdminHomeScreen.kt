@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -38,12 +39,16 @@ import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.icon.MiuixIcons
 import top.yukonga.miuix.kmp.icon.extended.Add
 import top.yukonga.miuix.kmp.icon.extended.Back
+import top.yukonga.miuix.kmp.icon.extended.Filter
+import top.yukonga.miuix.kmp.icon.extended.Settings
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
 fun AdminHomeScreen(
     appState: AppState,
     onBack: () -> Unit,
+    onOpenSiteSettings: () -> Unit,
+    onOpenComments: () -> Unit,
     onEditPost: (Post?) -> Unit,
     onLogout: () -> Unit,
     api: ApiClient,
@@ -92,6 +97,30 @@ fun AdminHomeScreen(
                         }
                         Spacer(Modifier.height(16.dp))
                     }
+                }
+                item {
+                    Card(Modifier.fillMaxWidth(), onClick = onOpenSiteSettings) {
+                        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(MiuixIcons.Settings, null, tint = MiuixTheme.colorScheme.primary)
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(Strings.get(appState.language, "siteSettings"), fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                }
+                item {
+                    Card(Modifier.fillMaxWidth(), onClick = onOpenComments) {
+                        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(MiuixIcons.Filter, null, tint = MiuixTheme.colorScheme.primary)
+                            Spacer(Modifier.width(12.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(Strings.get(appState.language, "commentManage"), fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                    Spacer(Modifier.height(16.dp))
                 }
                 items(posts, key = { it.id }) { post ->
                     Card(Modifier.fillMaxWidth(), onClick = { onEditPost(post) }) {
