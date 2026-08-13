@@ -11,6 +11,7 @@ import com.hyperos.blog.ui.HomeScreen
 import com.hyperos.blog.ui.MessagesScreen
 import com.hyperos.blog.ui.PostDetailScreen
 import com.hyperos.blog.ui.SearchScreen
+import com.hyperos.blog.ui.SettingsScreen
 import com.hyperos.blog.ui.TagsScreen
 
 @Composable
@@ -31,6 +32,7 @@ fun App() {
             AppRoute.Messages -> MessagesScreen(appState, onNavigate = { currentRoute = it }, api = api)
             AppRoute.Friends -> FriendsScreen(appState, onNavigate = { currentRoute = it }, api = api)
             AppRoute.About -> AboutScreen(appState, onNavigate = { currentRoute = it })
+            AppRoute.Settings -> SettingsScreen(appState, onNavigate = { currentRoute = it })
             AppRoute.Search -> SearchScreen(
                 appState,
                 onBack = { currentRoute = AppRoute.Home },
