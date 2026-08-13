@@ -4,6 +4,8 @@ import { Env } from './types';
 import { registerAuthRoutes } from './routes/auth';
 import { registerPostRoutes } from './routes/posts';
 import { registerTaxonomyRoutes } from './routes/taxonomy';
+import { registerInteractionRoutes } from './routes/interactions';
+import { registerSiteRoutes } from './routes/site';
 
 const router = new Router();
 
@@ -14,6 +16,8 @@ router.get('/api/health', async () => {
 registerAuthRoutes(router);
 registerPostRoutes(router);
 registerTaxonomyRoutes(router);
+registerInteractionRoutes(router);
+registerSiteRoutes(router);
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
