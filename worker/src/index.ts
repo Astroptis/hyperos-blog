@@ -1,12 +1,15 @@
 import { Router } from './router';
 import { jsonOk, jsonError, handleCors, withCors } from './response';
 import { Env } from './types';
+import { registerAuthRoutes } from './routes/auth';
 
 const router = new Router();
 
 router.get('/api/health', async () => {
   return jsonOk({ status: 'ok', time: new Date().toISOString() });
 });
+
+registerAuthRoutes(router);
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
