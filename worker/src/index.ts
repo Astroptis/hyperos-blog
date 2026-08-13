@@ -6,6 +6,7 @@ import { registerPostRoutes } from './routes/posts';
 import { registerTaxonomyRoutes } from './routes/taxonomy';
 import { registerInteractionRoutes } from './routes/interactions';
 import { registerSiteRoutes } from './routes/site';
+import { registerAdminRoutes } from './routes/admin';
 
 const router = new Router();
 
@@ -18,6 +19,7 @@ registerPostRoutes(router);
 registerTaxonomyRoutes(router);
 registerInteractionRoutes(router);
 registerSiteRoutes(router);
+registerAdminRoutes(router);
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
