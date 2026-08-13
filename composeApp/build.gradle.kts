@@ -51,7 +51,10 @@ tasks.named("wasmJsBrowserDistribution") {
         val distDir = layout.buildDirectory.dir("dist/wasmJs/productionExecutable")
         val webResources = layout.projectDirectory.dir("src/wasmJsMain/resources")
         copy {
-            from(webResources) { include("_redirects", "_headers") }
+            from(webResources) {
+                include("_redirects", "_headers", "_routes.json")
+                include("functions/**")
+            }
             into(distDir)
         }
     }

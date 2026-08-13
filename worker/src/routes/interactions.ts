@@ -19,7 +19,7 @@ export function registerInteractionRoutes(router: Router): void {
     const id = parseInt(params.id, 10);
     if (Number.isNaN(id)) return jsonError(400, 'Invalid post id');
     const rows = await env.DB.prepare(
-      'SELECT id, nickname, content, created_at FROM comments WHERE post_id = ? ORDER BY created_at ASC'
+      'SELECT id, nickname, content, created_at AS createdAt FROM comments WHERE post_id = ? ORDER BY created_at ASC'
     ).bind(id).all();
     return jsonOk(rows.results);
   });
@@ -89,7 +89,7 @@ export function registerInteractionRoutes(router: Router): void {
 
   router.get('/api/messages', async (_req, env) => {
     const rows = await env.DB.prepare(
-      'SELECT id, nickname, content, created_at FROM messages ORDER BY created_at DESC LIMIT 100'
+      'SELECT id, nickname, content, created_at AS createdAt FROM messages ORDER BY created_at DESC LIMIT 100'
     ).all();
     return jsonOk(rows.results);
   });

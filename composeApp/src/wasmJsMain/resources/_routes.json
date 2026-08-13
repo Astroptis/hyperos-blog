@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/composeApp.js", "/composeApp.wasm", "/styles.css"]
+}

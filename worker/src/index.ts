@@ -1,6 +1,6 @@
 import { Router } from './router';
 import { jsonOk, jsonError, handleCors, withCors } from './response';
-import { Env, PublicPost } from './types';
+import { Env, PostRow, PublicPost } from './types';
 import { registerAuthRoutes } from './routes/auth';
 import { registerPostRoutes } from './routes/posts';
 import { registerTaxonomyRoutes } from './routes/taxonomy';
@@ -8,6 +8,7 @@ import { registerInteractionRoutes } from './routes/interactions';
 import { registerSiteRoutes } from './routes/site';
 import { registerAdminRoutes } from './routes/admin';
 import { isBot, renderPostHTML, renderHomeHTML } from './seo';
+import { toPublicPost } from './mappers';
 
 const router = new Router();
 
@@ -54,9 +55,9 @@ export default {
         const slug = postMatch[1];
         const row = await env.DB.prepare(
           "SELECT * FROM posts WHERE slug = ? AND status = 'published'"
-        ).bind(slug).first<PublicPost>();
+        ).bind(slug).first<PostRow>();
         if (row) {
-          return new Response(renderPostHTML(row, siteTitle), {
+          return new Response(renderPostHTML(toPublicPost(row), siteTitle), {
             headers: { 'Content-Type': 'text/html; charset=utf-8' },
           });
         }
@@ -70,8 +71,8 @@ export default {
       if (homeMatch) {
         const rows = await env.DB.prepare(
           "SELECT * FROM posts WHERE status = 'published' ORDER BY created_at DESC LIMIT 10"
-        ).all<PublicPost>();
-        return new Response(renderHomeHTML(siteTitle, rows.results, settings), {
+        ).all<PostRow>();
+        return new Response(renderHomeHTML(siteTitle, rows.results.map(toPublicPost), settings), {
           headers: { 'Content-Type': 'text/html; charset=utf-8' },
         });
       }

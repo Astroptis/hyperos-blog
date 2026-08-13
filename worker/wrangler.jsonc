@@ -7,13 +7,13 @@
     {
       "binding": "DB",
       "database_name": "hyperos-blog",
-      "database_id": "REPLACE_WITH_D1_ID"
+      "database_id": "f5c2bb13-f5ef-4c56-b2fd-f3cd75054493"
     }
   ],
   "kv_namespaces": [
     {
       "binding": "KV",
-      "id": "REPLACE_WITH_KV_ID"
+      "id": "01de5cce298d4f5f8f88ce78c07d5f37"
     }
   ]
 }
