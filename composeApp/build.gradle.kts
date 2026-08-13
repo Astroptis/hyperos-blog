@@ -1,3 +1,4 @@
+import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -35,6 +36,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.markdown.renderer)
+            implementation(compose.components.resources)
         }
         wasmJsMain.dependencies {
             implementation(libs.ktor.client.js)
@@ -44,6 +46,7 @@ kotlin {
 
 compose.resources {
     publicResClass = true
+    generateResClass = ResourcesExtension.ResourceClassGeneration.Always
 }
 
 tasks.named("wasmJsBrowserDistribution") {
