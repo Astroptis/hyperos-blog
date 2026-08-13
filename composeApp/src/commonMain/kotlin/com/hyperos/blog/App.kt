@@ -5,6 +5,7 @@ import com.hyperos.blog.data.createDefaultApiClient
 import com.hyperos.blog.navigation.AppRoute
 import com.hyperos.blog.theme.AppTheme
 import com.hyperos.blog.ui.HomeScreen
+import com.hyperos.blog.ui.PostDetailScreen
 
 @Composable
 fun App() {
@@ -14,7 +15,12 @@ fun App() {
 
     AppTheme(state = appState.themeState) {
         when (currentRoute) {
-            AppRoute.Home -> HomeScreen(appState, api, onNavigate = { currentRoute = it })
+            AppRoute.PostDetail -> PostDetailScreen(
+                appState = appState,
+                slug = appState.currentSlug ?: "",
+                onBack = { currentRoute = AppRoute.Home },
+                api = api,
+            )
             else -> HomeScreen(appState, api, onNavigate = { currentRoute = it })
         }
     }

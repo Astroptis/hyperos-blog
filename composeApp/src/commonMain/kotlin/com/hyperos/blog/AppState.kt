@@ -10,6 +10,7 @@ class AppState {
     var language by mutableStateOf("zh")
     var adminToken by mutableStateOf<String?>(null)
     var siteTitle by mutableStateOf("HyperOS 博客")
+    var currentSlug by mutableStateOf<String?>(null)
 
     val isAdmin: Boolean get() = adminToken != null
 }

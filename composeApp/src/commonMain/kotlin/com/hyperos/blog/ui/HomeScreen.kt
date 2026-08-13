@@ -128,7 +128,10 @@ fun HomeScreen(
                     }
                 }
                 items(posts, key = { it.id }) { post ->
-                    PostCard(post, appState.language, onClick = { onNavigate(AppRoute.PostDetail) })
+                    PostCard(post, appState.language, onClick = {
+                        appState.currentSlug = post.slug
+                        onNavigate(AppRoute.PostDetail)
+                    })
                 }
                 if (posts.size < total) {
                     item {
