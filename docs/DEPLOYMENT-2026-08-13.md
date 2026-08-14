@@ -1,5 +1,14 @@
 # 部署完成记录（2026-08-13）
 
+## 2026-08-14 更新：修复 + 重部署
+- 修复侧栏 hover 展开失效：改用 `pointerInput` + 指针位置检测（原 `hoverable/collectIsHoveredAsState` 在 wasm 不可靠）
+- `/settings` 页面新增密码保护：未登录只显示密码框，验对后进入设置页
+- 修复导航后 URL 变但页面不切换：`navigate()` 先 `UrlRouter.push` 再用 `scope.launch` 更新 `routeResult`
+- 部署陷阱记录：Pages 构建 `_worker.js` 必须在干净的 dist（无已有 `_worker.js`）内执行
+  `wrangler pages functions build`，否则会走 advanced-mode 错误路径导致 proxy 失效
+- 最新部署：https://a8b12342.hyperos-blog.pages.dev（production=hyperos-blog.pages.dev）
+- Git：feature/hyperos-blog 与 main 均推送至 b979c94
+
 ## 已完成并验证
 
 ### 前端（Pages）
