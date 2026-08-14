@@ -1,5 +1,14 @@
 # 部署完成记录（2026-08-13）
 
+## 2026-08-14 三次更新：改用 Compose 原生 Enter/Exit 事件
+- 原因：DOM mousemove 方案（PointerTracker）在鼠标静止时不触发、`boundsInWindow` 与 `clientX/Y`
+  坐标系在 wasm 上不一致，侧栏仍会卡住
+- 修复：改用 Compose 原生 `PointerEventType.Enter/Exit`（`pointerInput` + `awaitPointerEventScope`），
+  进出组件时必然派发，不依赖持续移动；删除 PointerTracker expect/actual
+- 最新部署：https://da40fc9e.hyperos-blog.pages.dev（production=hyperos-blog.pages.dev）
+- 头像问题：`.heic` 格式不被 Skia/浏览器解码，需换 JPG/PNG/WebP 图床链接
+- Git：本地提交 07750fe（GitHub 网络暂不可达，推送待网络恢复）
+
 ## 2026-08-14 二次更新：根治 hover 卡死 + 输入框失灵
 - 根因：侧栏的 `pointerInput { while(true) { awaitPointerEvent() } }` 无限循环在 wasm 上会阻塞 Compose
   指针事件系统，导致①侧栏 hover 状态卡住②`/settings` 输入框无法点击聚焦输入
