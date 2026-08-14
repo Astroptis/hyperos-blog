@@ -31,13 +31,22 @@ fun App() {
     val scope = rememberCoroutineScope()
     var routeResult by remember { mutableStateOf(AppRoutes.parse(UrlRouter.currentPath())) }
 
+    fun applyPath(path: String) {
+        val parsed = AppRoutes.parse(path)
+        if (parsed.route == AppRoute.PostDetail) appState.currentSlug = parsed.param
+        routeResult = parsed
+    }
+
     fun navigate(route: AppRoute, param: String? = null) {
         if (route == AppRoute.PostDetail) {
             if (param != null) appState.currentSlug = param
         }
         val effectiveParam = if (route == AppRoute.PostDetail) appState.currentSlug else param
-        routeResult = RouteResult(route, effectiveParam)
-        UrlRouter.push(AppRoutes.pathOf(route, effectiveParam))
+        val path = AppRoutes.pathOf(route, effectiveParam)
+        UrlRouter.push(path)
+        scope.launch {
+            routeResult = RouteResult(route, effectiveParam)
+        }
     }
 
     fun navigateSlug(slug: String) {
@@ -55,9 +64,7 @@ fun App() {
             FaviconManager.update(appState.faviconUrl)
         }
         UrlRouter.listen { path ->
-            val parsed = AppRoutes.parse(path)
-            if (parsed.route == AppRoute.PostDetail) appState.currentSlug = parsed.param
-            routeResult = parsed
+            applyPath(path)
         }
     }
 
@@ -77,7 +84,7 @@ fun App() {
             AppRoute.Messages -> MessagesScreen(appState, onNavigate = { route -> navigate(route) }, api = api)
             AppRoute.Friends -> FriendsScreen(appState, onNavigate = { route -> navigate(route) }, api = api)
             AppRoute.About -> AboutScreen(appState, onNavigate = { route -> navigate(route) })
-            AppRoute.Settings -> SettingsScreen(appState, onNavigate = { route -> navigate(route) })
+            AppRoute.Settings -> SettingsScreen(appState, onNavigate = { route -> navigate(route) }, api = api)
             AppRoute.Search -> SearchScreen(
                 appState,
                 onBack = { navigate(AppRoute.Home) },

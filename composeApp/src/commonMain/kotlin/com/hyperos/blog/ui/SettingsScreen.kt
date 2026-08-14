@@ -1,5 +1,6 @@
 package com.hyperos.blog.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,28 +9,85 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hyperos.blog.AppState
+import com.hyperos.blog.data.ApiClient
+import com.hyperos.blog.data.AuthResponse
 import com.hyperos.blog.i18n.Strings
 import com.hyperos.blog.navigation.AppRoute
 import com.hyperos.blog.theme.ThemeMode
 import com.hyperos.blog.ui.components.MiuixScaffold
+import kotlinx.coroutines.launch
+import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.ColorPicker
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.HorizontalDivider
+import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.basic.TextField
 import top.yukonga.miuix.kmp.overlay.OverlayDialog
 import top.yukonga.miuix.kmp.preference.ArrowPreference
 import top.yukonga.miuix.kmp.preference.RadioButtonPreference
 import top.yukonga.miuix.kmp.preference.SliderPreference
 import top.yukonga.miuix.kmp.preference.SwitchPreference
+import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
 fun SettingsScreen(
     appState: AppState,
     onNavigate: (AppRoute) -> Unit,
+    api: com.hyperos.blog.data.ApiClient,
 ) {
+    var password by remember { mutableStateOf("") }
+    var loading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+
+    if (!appState.isAdmin) {
+        MiuixScaffold(
+            title = Strings.get(appState.language, "settings"),
+            appState = appState,
+            currentRoute = AppRoute.Settings,
+            onNavigate = onNavigate,
+        ) {
+            Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                TextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = Strings.get(appState.language, "password"),
+                )
+                if (error != null) {
+                    Text(error!!, color = MiuixTheme.colorScheme.error)
+                }
+                Button(
+                    onClick = {
+                        loading = true
+                        error = null
+                        scope.launch {
+                            val resp = api.post<AuthResponse>(
+                                "/api/auth/login",
+                                mapOf("username" to "admin", "password" to password),
+                            )
+                            if (resp.ok && resp.data != null) {
+                                appState.adminToken = resp.data.token
+                                api.setToken(resp.data.token)
+                            } else {
+                                error = resp.error
+                            }
+                            loading = false
+                        }
+                    },
+                    enabled = !loading,
+                ) {
+                    Text(if (loading) Strings.get(appState.language, "loading") else Strings.get(appState.language, "login"))
+                }
+            }
+        }
+        return
+    }
+
     var showThemeDialog by remember { mutableStateOf(false) }
     var showColorDialog by remember { mutableStateOf(false) }
     var showLanguageDialog by remember { mutableStateOf(false) }

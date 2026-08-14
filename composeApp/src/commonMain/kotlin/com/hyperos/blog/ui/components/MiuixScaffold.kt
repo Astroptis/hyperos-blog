@@ -9,9 +9,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.hoverable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -28,7 +25,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
@@ -36,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -108,8 +108,7 @@ private fun BoxScope.HoverSideNavigationBar(
     )
     val selectedIndex = items.indexOfFirst { it.route == currentRoute }.coerceAtLeast(0)
 
-    val interactionSource = remember { MutableInteractionSource() }
-    val isHovered by interactionSource.collectIsHoveredAsState()
+    var isHovered by remember { mutableStateOf(false) }
     val expandedWidth = 132.dp
     val collapsedWidth = 52.dp
     val barWidth by animateDpAsState(
@@ -140,7 +139,22 @@ private fun BoxScope.HoverSideNavigationBar(
                     color = MiuixTheme.colorScheme.surfaceContainer,
                     cornerRadius = cornerRadius,
                 )
-                .hoverable(interactionSource)
+                .pointerInput(Unit) {
+                    var inside = false
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            val pos = event.changes.firstOrNull()?.position
+                            if (pos != null) {
+                                val now = pos.x >= 0f && pos.y >= 0f && pos.x <= size.width && pos.y <= size.height
+                                if (now != inside) {
+                                    inside = now
+                                    isHovered = now
+                                }
+                            }
+                        }
+                    }
+                }
                 .padding(vertical = 10.dp),
         ) {
             items.forEachIndexed { index, item ->
@@ -166,26 +180,20 @@ private fun SideNavItemRow(
     } else {
         MiuixTheme.colorScheme.onSurfaceContainer.copy(alpha = 0.4f)
     }
-    val interactionSource = remember { MutableInteractionSource() }
-    val isItemHovered by interactionSource.collectIsHoveredAsState()
     val itemCornerRadius = 22.dp
     Row(
         modifier = Modifier
             .height(48.dp)
             .padding(horizontal = 6.dp)
             .squircleBackground(
-                color = when {
-                    selected -> MiuixTheme.colorScheme.surfaceContainerHighest
-                    isItemHovered -> MiuixTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.5f)
-                    else -> Color.Transparent
+                color = if (selected) {
+                    MiuixTheme.colorScheme.surfaceContainerHighest
+                } else {
+                    Color.Transparent
                 },
                 cornerRadius = itemCornerRadius,
             )
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick,
-            )
+            .clickable(onClick = onClick)
             .padding(horizontal = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = if (expanded) Arrangement.Start else Arrangement.Center,
