@@ -1,5 +1,13 @@
 # 部署完成记录（2026-08-13）
 
+## 2026-08-14 二次更新：根治 hover 卡死 + 输入框失灵
+- 根因：侧栏的 `pointerInput { while(true) { awaitPointerEvent() } }` 无限循环在 wasm 上会阻塞 Compose
+  指针事件系统，导致①侧栏 hover 状态卡住②`/settings` 输入框无法点击聚焦输入
+- 修复：彻底移除该 `pointerInput`，改用 DOM 全局 `mousemove` 监听（expect/actual `PointerTracker`）
+  + `onGloballyPositioned`/`boundsInWindow` 判断鼠标是否在侧栏矩形内，完全绕开 Compose 命中测试
+- 最新部署：https://bb9c0dc6.hyperos-blog.pages.dev（production=hyperos-blog.pages.dev）
+- Git：feature/hyperos-blog 与 main 均推送至 6b0a073
+
 ## 2026-08-14 更新：修复 + 重部署
 - 修复侧栏 hover 展开失效：改用 `pointerInput` + 指针位置检测（原 `hoverable/collectIsHoveredAsState` 在 wasm 不可靠）
 - `/settings` 页面新增密码保护：未登录只显示密码框，验对后进入设置页
