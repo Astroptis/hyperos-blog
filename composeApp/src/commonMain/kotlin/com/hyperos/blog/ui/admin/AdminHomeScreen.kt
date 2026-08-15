@@ -29,9 +29,9 @@ import com.hyperos.blog.data.Post
 import com.hyperos.blog.data.PostListData
 import com.hyperos.blog.data.SiteStats
 import com.hyperos.blog.i18n.Strings
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
@@ -141,7 +141,7 @@ fun AdminHomeScreen(
                     Spacer(Modifier.height(8.dp))
                 }
             }
-            Button(
+            AppButton(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
                 onClick = onLogout,
             ) {

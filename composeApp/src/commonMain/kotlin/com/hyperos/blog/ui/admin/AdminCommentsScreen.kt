@@ -25,9 +25,9 @@ import com.hyperos.blog.AppState
 import com.hyperos.blog.data.ApiClient
 import com.hyperos.blog.data.AdminComment
 import com.hyperos.blog.i18n.Strings
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
@@ -88,7 +88,7 @@ fun AdminCommentsScreen(
                             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                         )
                         Spacer(Modifier.height(8.dp))
-                        Button(
+                        AppButton(
                             onClick = {
                                 scope.launch {
                                     api.delete<Any>("/api/comments/${comment.id}")

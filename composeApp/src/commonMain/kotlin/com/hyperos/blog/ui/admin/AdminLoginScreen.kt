@@ -18,9 +18,9 @@ import com.hyperos.blog.AppState
 import com.hyperos.blog.data.ApiClient
 import com.hyperos.blog.data.AuthResponse
 import com.hyperos.blog.i18n.Strings
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextField
 import top.yukonga.miuix.kmp.theme.MiuixTheme
@@ -50,7 +50,8 @@ fun AdminLoginScreen(
             if (error != null) {
                 Text(error!!, color = MiuixTheme.colorScheme.error)
             }
-            Button(
+            Spacer(Modifier.height(1.dp))
+            AppButton(
                 onClick = {
                     loading = true
                     error = null
@@ -70,6 +71,7 @@ fun AdminLoginScreen(
                     }
                 },
                 enabled = !loading,
+                expandWidth = true,
             ) {
                 Text(if (loading) Strings.get(appState.language, "loading") else Strings.get(appState.language, "login"))
             }

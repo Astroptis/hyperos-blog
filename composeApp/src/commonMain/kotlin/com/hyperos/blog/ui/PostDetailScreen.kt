@@ -28,12 +28,12 @@ import com.hyperos.blog.data.Comment
 import com.hyperos.blog.data.CommentInput
 import com.hyperos.blog.data.Post
 import com.hyperos.blog.i18n.Strings
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import com.hyperos.blog.ui.components.blogMarkdownColors
 import com.hyperos.blog.ui.components.blogMarkdownTypography
 import kotlinx.coroutines.launch
 import com.mikepenz.markdown.compose.Markdown
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.CircularProgressIndicator
 import top.yukonga.miuix.kmp.basic.Icon
@@ -120,7 +120,7 @@ fun PostDetailScreen(
                     item {
                         Spacer(Modifier.height(16.dp))
                         Row {
-                            Button(onClick = {
+                            AppButton(onClick = {
                                 scope.launch {
                                     api.post<Map<String, Any>>("/api/posts/${post!!.id}/like")
                                     post = post!!.copy(likeCount = post!!.likeCount + 1)
@@ -138,7 +138,7 @@ fun PostDetailScreen(
                         ) {
                             SmallTitle(text = Strings.get(appState.language, "comments"))
                             Spacer(Modifier.weight(1f))
-                            Button(onClick = { showCommentDialog = true }) {
+                            AppButton(onClick = { showCommentDialog = true }) {
                                 Text(Strings.get(appState.language, "writeComment"))
                             }
                         }
@@ -185,7 +185,7 @@ fun PostDetailScreen(
                 Spacer(Modifier.height(12.dp))
                 Row {
                     Spacer(Modifier.weight(1f))
-                    Button(onClick = {
+                    AppButton(onClick = {
                         scope.launch {
                             val p = post
                             if (p != null) {

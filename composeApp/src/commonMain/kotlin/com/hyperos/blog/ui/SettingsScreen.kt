@@ -2,8 +2,10 @@ package com.hyperos.blog.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,9 +21,9 @@ import com.hyperos.blog.data.AuthResponse
 import com.hyperos.blog.i18n.Strings
 import com.hyperos.blog.navigation.AppRoute
 import com.hyperos.blog.theme.ThemeMode
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.ColorPicker
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.HorizontalDivider
@@ -61,7 +63,8 @@ fun SettingsScreen(
                 if (error != null) {
                     Text(error!!, color = MiuixTheme.colorScheme.error)
                 }
-                Button(
+                Spacer(Modifier.height(1.dp))
+                AppButton(
                     onClick = {
                         loading = true
                         error = null
@@ -80,6 +83,7 @@ fun SettingsScreen(
                         }
                     },
                     enabled = !loading,
+                    expandWidth = true,
                 ) {
                     Text(if (loading) Strings.get(appState.language, "loading") else Strings.get(appState.language, "login"))
                 }

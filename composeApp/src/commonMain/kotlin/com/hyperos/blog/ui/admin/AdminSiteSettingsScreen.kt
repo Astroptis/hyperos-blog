@@ -19,9 +19,9 @@ import com.hyperos.blog.AppState
 import com.hyperos.blog.data.ApiClient
 import com.hyperos.blog.i18n.Strings
 import com.hyperos.blog.navigation.FaviconManager
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
 import top.yukonga.miuix.kmp.basic.Text
@@ -82,7 +82,7 @@ fun AdminSiteSettingsScreen(
             if (message != null) {
                 Text(message!!, color = if (message!!.startsWith("OK")) MiuixTheme.colorScheme.primary else MiuixTheme.colorScheme.error)
             }
-            Button(
+            AppButton(
                 onClick = {
                     saving = true
                     message = null

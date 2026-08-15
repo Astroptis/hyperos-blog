@@ -25,10 +25,10 @@ import com.hyperos.blog.data.Post
 import com.hyperos.blog.data.PostListData
 import com.hyperos.blog.i18n.Strings
 import com.hyperos.blog.navigation.AppRoute
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import com.hyperos.blog.ui.components.PostCard
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.PullToRefresh
 import top.yukonga.miuix.kmp.basic.TabRow
 import top.yukonga.miuix.kmp.basic.Text
@@ -130,7 +130,7 @@ fun ArchiveScreen(
                             Modifier.fillMaxWidth().padding(8.dp),
                             contentAlignment = Alignment.Center,
                         ) {
-                            Button(onClick = { scope.launch { loadPosts(false) } }) {
+                            AppButton(onClick = { scope.launch { loadPosts(false) } }) {
                                 Text(Strings.get(appState.language, "loadMore"))
                             }
                         }

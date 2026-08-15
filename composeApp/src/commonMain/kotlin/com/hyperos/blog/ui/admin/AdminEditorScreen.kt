@@ -24,9 +24,9 @@ import com.hyperos.blog.data.ApiClient
 import com.hyperos.blog.data.Post
 import com.hyperos.blog.data.PostInput
 import com.hyperos.blog.i18n.Strings
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
 import top.yukonga.miuix.kmp.basic.Switch
@@ -64,7 +64,7 @@ fun AdminEditorScreen(
             }
         },
         topBarActions = {
-            Button(onClick = {
+            AppButton(onClick = {
                 saving = true
                 scope.launch {
                     val input = PostInput(
@@ -112,7 +112,7 @@ fun AdminEditorScreen(
                 Text(if (published) Strings.get(appState.language, "publish") else Strings.get(appState.language, "draft"))
             }
             if (post != null) {
-                Button(
+                AppButton(
                     onClick = {
                         scope.launch {
                             api.delete<Any>("/api/admin/posts/${post.id}")

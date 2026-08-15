@@ -28,9 +28,9 @@ import com.hyperos.blog.data.ApiClient
 import com.hyperos.blog.data.Friend
 import com.hyperos.blog.i18n.Strings
 import com.hyperos.blog.navigation.AppRoute
+import com.hyperos.blog.ui.components.AppButton
 import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
 import top.yukonga.miuix.kmp.basic.Icon
 import top.yukonga.miuix.kmp.basic.IconButton
@@ -112,7 +112,7 @@ fun FriendsScreen(
                 Spacer(Modifier.height(12.dp))
                 Row {
                     Spacer(Modifier.weight(1f))
-                    Button(onClick = {
+                    AppButton(onClick = {
                         scope.launch {
                             val resp = api.post<Friend>(
                                 "/api/friends",
