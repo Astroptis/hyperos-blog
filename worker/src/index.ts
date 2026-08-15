@@ -16,6 +16,22 @@ router.get('/api/health', async () => {
   return jsonOk({ status: 'ok', time: new Date().toISOString() });
 });
 
+router.get('/api/img-proxy', async (req) => {
+  const url = new URL(req.url);
+  const target = url.searchParams.get('url');
+  if (!target) return jsonError(400, 'missing url');
+  const t = new URL(target);
+  if (t.protocol !== 'https:' && t.protocol !== 'http:') return jsonError(400, 'bad protocol');
+  const upstream = await fetch(t.toString());
+  if (!upstream.ok) return new Response('upstream error', { status: upstream.status });
+  return new Response(upstream.body, {
+    headers: {
+      'Content-Type': upstream.headers.get('Content-Type') ?? 'application/octet-stream',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    },
+  });
+});
+
 registerAuthRoutes(router);
 registerPostRoutes(router);
 registerTaxonomyRoutes(router);

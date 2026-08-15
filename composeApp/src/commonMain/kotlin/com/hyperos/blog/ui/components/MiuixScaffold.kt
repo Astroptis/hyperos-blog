@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.hyperos.blog.AppState
 import com.hyperos.blog.i18n.Strings
 import com.hyperos.blog.navigation.AppRoute
+import com.hyperos.blog.navigation.DocumentTitleManager
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TopAppBar
@@ -67,6 +69,11 @@ fun MiuixScaffold(
     topBarActions: @Composable RowScope.() -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    SideEffect {
+        DocumentTitleManager.update(
+            if (title.isBlank()) appState.siteTitle else title
+        )
+    }
     Scaffold(
         topBar = {
             TopAppBar(

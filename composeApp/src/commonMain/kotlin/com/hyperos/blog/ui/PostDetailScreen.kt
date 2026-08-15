@@ -84,11 +84,6 @@ fun PostDetailScreen(
                 Icon(MiuixIcons.Back, null)
             }
         },
-        topBarActions = {
-            IconButton(onClick = { showCommentDialog = true }) {
-                Icon(MiuixIcons.Answer, null)
-            }
-        },
     ) {
         when {
             loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -137,7 +132,16 @@ fun PostDetailScreen(
                     }
                     item {
                         Spacer(Modifier.height(24.dp))
-                        SmallTitle(text = Strings.get(appState.language, "comments"))
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            SmallTitle(text = Strings.get(appState.language, "comments"))
+                            Spacer(Modifier.weight(1f))
+                            Button(onClick = { showCommentDialog = true }) {
+                                Text(Strings.get(appState.language, "writeComment"))
+                            }
+                        }
                         Spacer(Modifier.height(8.dp))
                     }
                     items(comments, key = { it.id }) { comment ->

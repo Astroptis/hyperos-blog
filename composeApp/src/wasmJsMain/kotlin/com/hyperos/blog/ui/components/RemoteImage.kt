@@ -18,7 +18,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsBytes
-import io.ktor.client.call.body
+import kotlinx.browser.window
 import org.jetbrains.skia.Image
 
 @Composable
@@ -38,8 +38,9 @@ actual fun RemoteImage(
             return@LaunchedEffect
         }
         try {
+            val proxied = proxyUrl(url)
             val client = HttpClient(Js.create())
-            val bytes = client.get(url).bodyAsBytes()
+            val bytes = client.get(proxied).bodyAsBytes()
             client.close()
             val img = Image.makeFromEncoded(bytes)
             bitmap = img.toComposeImageBitmap()
@@ -62,4 +63,28 @@ actual fun RemoteImage(
         ) {
         }
     }
+}
+
+private fun proxyUrl(url: String): String {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) return url
+    val origin = window.location.origin
+    if (url.startsWith(origin)) return url
+    return "${origin}/api/img-proxy?url=${encodeURIComponent(url)}"
+}
+
+private fun encodeURIComponent(s: String): String {
+    val hex = "0123456789ABCDEF"
+    val sb = StringBuilder()
+    for (c in s) {
+        if (c in 'A'..'Z' || c in 'a'..'z' || c in '0'..'9' || c == '-' || c == '_' || c == '.' || c == '~') {
+            sb.append(c)
+        } else {
+            val bytes = c.toString().encodeToByteArray()
+            for (b in bytes) {
+                val v = 0xFF and b.toInt()
+                sb.append('%').append(hex[v shr 4]).append(hex[v and 0x0F])
+            }
+        }
+    }
+    return sb.toString()
 }

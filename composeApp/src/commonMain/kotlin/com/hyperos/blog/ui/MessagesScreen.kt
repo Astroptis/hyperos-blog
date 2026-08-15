@@ -31,12 +31,8 @@ import com.hyperos.blog.ui.components.MiuixScaffold
 import kotlinx.coroutines.launch
 import top.yukonga.miuix.kmp.basic.Button
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.Icon
-import top.yukonga.miuix.kmp.basic.IconButton
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextField
-import top.yukonga.miuix.kmp.icon.MiuixIcons
-import top.yukonga.miuix.kmp.icon.extended.Edit
 import top.yukonga.miuix.kmp.overlay.OverlayDialog
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
@@ -65,13 +61,14 @@ fun MessagesScreen(
         appState = appState,
         currentRoute = AppRoute.Messages,
         onNavigate = onNavigate,
-        topBarActions = {
-            IconButton(onClick = { showDialog = true }) {
-                Icon(MiuixIcons.Edit, null)
-            }
-        },
     ) {
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(16.dp)) {
+            item {
+                Button(onClick = { showDialog = true }) {
+                    Text(Strings.get(appState.language, "leaveMessage"))
+                }
+                Spacer(Modifier.height(16.dp))
+            }
             if (messages.isEmpty()) {
                 item {
                     Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) {
