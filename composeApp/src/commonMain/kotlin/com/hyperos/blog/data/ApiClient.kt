@@ -50,7 +50,7 @@ class ApiClient(
                 if (status >= 500) continue
                 val json = Json { ignoreUnknownKeys = true }
                 return json.decodeFromString<ApiResponse<T>>(text)
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 // 网络错误，尝试下一个 baseUrl
             }
         }
